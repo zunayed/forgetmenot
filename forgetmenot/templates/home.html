@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="jumbo">
+    <h3>Favorites</h3>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Title</th>
+        </tr>
+            {%for item in data %}
+                <tr>
+                    <th>{{item}}</th>
+                    <th>{{data[item]}}</th>
+                </tr>
+            {% endfor %}
+    </table>
+  </div>
+{% endblock %}
