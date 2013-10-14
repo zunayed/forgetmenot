@@ -21,7 +21,7 @@ def signup():
 		if form.validate() == False:
 			return render_template('signup.html', form=form)
 		else:   
-			student = User(form.firstname.data, form.lastname.data, form.email.data)
+			student = User(form.firstname.data, form.lastname.data, form.email.data, form.password.data)
 			db.session.add(student)
 			db.session.commit()
 			print student
