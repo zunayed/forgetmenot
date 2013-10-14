@@ -9,3 +9,4 @@ import forgetmenot.routes
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://zunayed:password@localhost/forgetmenot"
 db.init_app(app)
+
