@@ -10,12 +10,14 @@ class User(db.Model):
     lastname = db.Column(db.String(100))
     email = db.Column(db.String(120), unique=True)
     pwdhash = db.Column(db.String(100))
+    soundclould_token = db.Column(db.String(100))
 
     def __init__(self, firstname, lastname, email, password):
         self.firstname = firstname
         self.lastname = lastname
         self.email = email.lower()
         self.setPassword(password)
+        self.soundclould_token = ''
      
     def setPassword(self, password):
         self.pwdhash = generate_password_hash(password)

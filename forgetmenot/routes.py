@@ -4,17 +4,23 @@ from dataprep import getSoundcloud
 from models import db, User
 from form import SignupForm, SigninForm
 
-import soundcloud
+import soundcloud as sc
 
 #create soundcloud client object with app credentials
-client = soundcloud.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
+client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
                        client_secret='d1f3656edbd4f2cdf10ced0dce112c4f',
-                       redirect_uri='http://localhost:5000/profile')
+                       redirect_uri='http://localhost:5000/link_services')
 
 @app.route('/')
 def home():
-	favorites = getData()
-	return render_template('home.html', data = favorites)
+	#favorites = getData()
+	fav = client.get('/me/favorites/', limit = 30)
+	playlist = {}
+	for track in fav:
+		playlist[track.user['username']] = track.title
+
+	return str(playlist)
+	#return render_template('home.html', data = favorites)
 	#return redirect(url_for('profile'))
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -60,19 +66,7 @@ def signout():
 
 @app.route('/profile')
 def profile():
-
-	soundcloud_token = request.args.get('code', '')
-	if soundcloud_token == '':
-		print "no token"
-	else:
-		print "got token"
-		client = soundcloud.Client(access_token = soundcloud_token)
-		fav = client.get('/me/favorites/', limit = 30)
-		playlist = {}
-		for track in fav:
-			playlist[track.user['username']] = track.title
-
-		print playlist
+	soundcloud_code = request.args.get('code', '')
 
 	if 'email' not in session:
 		return redirect(url_for('signin'))
@@ -82,7 +76,17 @@ def profile():
 	if user is None:
 		return redirect(url_for('signin'))
 	else:
+		# if user.soundclould_code == '':
+		# 	user.soundclould_token = client.exchange_token(code = soundcloud_code) 
+			# access_token = client.exchange_token(soundcloud_code)
+			# client = sc.Client(access_token = access_token)
 		return render_template('profile.html')
+
+@app.route('/link_services')
+def link_services():
+	soundcloud_code = request.args.get('code', '')
+
+	return 'linked'
 
 @app.route('/profile/soundcloud')
 def soundcloud():
