@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="jumbo">
-    <h2>Profile<h2>
-    <h3>This is {{ session['email'] }}'s profile page<h3>
-  </div>
+<h2>Profile<h2>
+<h3>This is {{ session['email'] }}'s profile page<h3>
+
+<form action="{{ url_for('soundcloud') }}">
+    <input type="submit" value="go to soundcloud">
+</form>
+
 {% endblock %}
+

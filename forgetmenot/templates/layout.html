@@ -2,16 +2,28 @@
 <html>
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Sound Diff</title>    
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <title>ForgetMeNot</title>    
   </head>
   <body>
+   
     <header>
       <div class="container">
-        <h1 class="logo">ForgetMeNot</h1>
+       <h1 class="logo">  <a href="{{ url_for('home') }}">ForgetMeNot</a></h1> 
         <strong><nav>
           <ul class="menu">
+
+        {% if 'email' in session %}
         <li><a href="{{ url_for('home') }}">Home</a></li>
         <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        <li><a href="{{ url_for('signout') }}">Signout</a></li>
+        {% else %}
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('signin') }}">Signin</a></li>
+        <li><a href="{{ url_for('signup') }}">Signup</a></li>
+        {% endif %}
       </ul>
     </nav></strong>
       </div>
