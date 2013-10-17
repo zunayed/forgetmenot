@@ -27,6 +27,7 @@ def home():
 def signup():
 	#intiate for signupForm class from form.py
 	form = SignupForm()
+	#dive into flask migrations to make sure I don't have to delete tables
 	db.create_all()
 
 	#form validation
@@ -74,20 +75,22 @@ def profile():
 
 	user = User.query.filter_by(email = session['email']).first()
 
-	if user is None:
-		return redirect(url_for('signin'))
-	else:
+	if user:
 		return render_template('profile.html')
+	else:
+		return redirect(url_for('signin'))
+	
 
 @app.route('/link_services')
 def link_services():
-	soundcloud_code = request.args.get('code', '')
+	soundcloud_code = request.args.get('code')
+
+	#if soundcloud doesn't come back with show error
 	access_token = client.exchange_token(code = soundcloud_code) 
 	user = User.query.filter_by(email = session['email']).first()
 	
-	if user.soundclould_token == '':
-		user.soundclould_token = access_token.access_token
-		db.session.commit()
+	user.soundclould_token = access_token.access_token
+	db.session.commit()
 
 	return redirect(url_for('profile'))
 
@@ -95,10 +98,12 @@ def link_services():
 def soundcloud():
 	user = User.query.filter_by(email = session['email']).first()
 	#check to see if token already exist in database
-	if user.soundclould_token == '':	
-		return redirect(client.authorize_url())		
-	else:
+
+	if user.soundclould_token:	
 		return redirect(url_for('profile'))
+	else:
+		return redirect(client.authorize_url())	
+		
 
 @app.route('/about')
 def about():
