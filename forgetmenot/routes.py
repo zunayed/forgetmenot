@@ -1,33 +1,35 @@
 from forgetmenot import app
 from flask import Flask, render_template, request, url_for, redirect, session
-from dataprep import getSoundcloud 
 from models import db, User
 from form import SignupForm, SigninForm
 
 import soundcloud as sc
 
-#create soundcloud client object with app credentials
+#create soundcloud client object with app credentials 
 client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
                        client_secret='d1f3656edbd4f2cdf10ced0dce112c4f',
                        redirect_uri='http://localhost:5000/link_services')
 
 @app.route('/')
 def home():
-	#favorites = getData()
+	#Look up user in  database using SQLalchemy 
+	user = User.query.filter_by(email = session['email']).first()
+	access_token = client.exchange_token(code = user.soundclould_token)
+	
 	fav = client.get('/me/favorites/', limit = 30)
 	playlist = {}
 	for track in fav:
 		playlist[track.user['username']] = track.title
 
-	return str(playlist)
-	#return render_template('home.html', data = favorites)
-	#return redirect(url_for('profile'))
+	return render_template('home.html', data = playlist)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+	#intiate for signupForm class from form.py
 	form = SignupForm()
 	db.create_all()
 
+	#form validation
 	if request.method == 'POST':
 		if form.validate() == False:
 			return render_template('signup.html', form=form)
@@ -36,6 +38,7 @@ def signup():
 			db.session.add(new_user)
 			db.session.commit()
 
+			#store in cookies 
 			session['email'] = new_user.email
 			return redirect(url_for('profile'))
 
@@ -66,8 +69,6 @@ def signout():
 
 @app.route('/profile')
 def profile():
-	soundcloud_code = request.args.get('code', '')
-
 	if 'email' not in session:
 		return redirect(url_for('signin'))
 
@@ -76,21 +77,28 @@ def profile():
 	if user is None:
 		return redirect(url_for('signin'))
 	else:
-		# if user.soundclould_code == '':
-		# 	user.soundclould_token = client.exchange_token(code = soundcloud_code) 
-			# access_token = client.exchange_token(soundcloud_code)
-			# client = sc.Client(access_token = access_token)
 		return render_template('profile.html')
 
 @app.route('/link_services')
 def link_services():
 	soundcloud_code = request.args.get('code', '')
+	access_token = client.exchange_token(code = soundcloud_code) 
+	user = User.query.filter_by(email = session['email']).first()
+	
+	if user.soundclould_token == '':
+		user.soundclould_token = access_token.access_token
+		db.session.commit()
 
-	return 'linked'
+	return redirect(url_for('profile'))
 
 @app.route('/profile/soundcloud')
 def soundcloud():
-	return redirect(client.authorize_url())		
+	user = User.query.filter_by(email = session['email']).first()
+	#check to see if token already exist in database
+	if user.soundclould_token == '':	
+		return redirect(client.authorize_url())		
+	else:
+		return redirect(url_for('profile'))
 
 @app.route('/about')
 def about():
