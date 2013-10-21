@@ -1,4 +1,21 @@
 /* Sign up form */
+body {
+  margin-top: 50px;
+  margin-left: 100px
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #444;
+}
+
+.content {
+    /*margin-top: 100px;*/
+    float: center;
+    position:relative;
+    width: 940px;
+    margin: 0 auto;
+    text-align: left;
+    /*top: 100px;*/
+
+}
 form label {
   font-size: 1.2em;
   font-weight: bold;
@@ -45,5 +62,6 @@ form input[type="submit"]:hover{
 .flash {
   background-color: #FBB0B0;
   padding: 10px;
-  width: 400px;
+  text-align: center;
+  width: 100%;
 }

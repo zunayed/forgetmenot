@@ -1,11 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Profile<h2>
-<h3>This is {{ session['email'] }}'s profile page<h3>
+<div class = "sub">
+	<div class = "submenu">
+		<h3>/{{ session['email'] }}'s profile </h3>
+	</div>
+</div>
+<div class = "content">
+	<form action="{{ url_for('soundcloud') }}">
+	    <input type="submit" value="go to soundcloud">
+	</form>
 
-<form action="{{ url_for('soundcloud') }}">
-    <input type="submit" value="go to soundcloud">
-</form>
+<!-- 	<table>
+        <tr>
+            <th>User</th>
+            <th>Title</th>
+        </tr>
+            {%for item in data %}
+                <tr>
+                    <th>{{item}}</th>
+                    <th>{{data[item]}}</th>
+                </tr>
+            {% endfor %}
+    </table> -->
+</div>
 
 {% endblock %}
 
