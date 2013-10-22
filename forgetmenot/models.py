@@ -11,6 +11,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True)
     pwdhash = db.Column(db.String(100))
     soundcloud_token = db.Column(db.String(100))
+    tracks = db.relationship('soundcloud_tracks', backref='User', lazy='dynamic')
+
 
     def __init__(self, firstname, lastname, email, password):
         self.firstname = firstname
@@ -25,6 +27,14 @@ class User(db.Model):
     def checkPassword(self, password):
         return check_password_hash(self.pwdhash, password)
 
+class soundcloud_tracks(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    artist = db.Column(db.String(100))
+    title = db.Column(db.String(100))
+    url = db.Column(db.String(200))
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
 
-# class Soundcloud(db.Model):
-#     uid = db.Column(db.Integer, primary_key = True)
+    def __init__(self, artist, title, url):
+        self.artist = artist
+        self.title = title
+        self.url = url
