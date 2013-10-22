@@ -61,17 +61,17 @@ header h1.logo:hover {
   text-decoration: none;
 }
 
-.submenu li {
-  display: inline;
-  margin-right: 5px;
-  margin-left: 35px;
-}
+.submenu {
+  text-align: left;
 
-.submenu li a {
-  color: #fff;
+}
+.features li {
+  display: inline;
+}
+.features li a {
+  color: #000;
   text-decoration: none;
 }
-
 
 /*
  * Center the body content

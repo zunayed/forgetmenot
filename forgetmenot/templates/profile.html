@@ -2,7 +2,14 @@
 {% block content %}
 <div class = "sub">
 	<div class = "submenu">
-		<h3>/{{ session['email'] }}'s profile </h3>
+		<strong><nav>
+			<ul class="features">
+				<li><a href="{{ url_for('home') }}"> / Home</a></li>
+				<li><a href="{{ url_for('about') }}"> / About</a></li>
+			</ul>
+		</nav></strong>
+
+		
 	</div>
 </div>
 <div class = "content">
