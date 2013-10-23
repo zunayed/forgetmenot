@@ -1,6 +1,6 @@
 from forgetmenot import app
 from flask import Flask, render_template, request, url_for, redirect, session
-from models import db, User
+from models import db, User, soundcloud_tracks
 from form import SignupForm, SigninForm
 
 import soundcloud as sc
@@ -12,6 +12,7 @@ client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
 
 @app.route('/')
 def home():
+	db.create_all()
 	#Look up user in  database using SQLalchemy 
 	# user = User.query.filter_by(email = session['email']).first()
 	# access_token = client.exchange_token(code = user.soundcloud_token)
@@ -28,7 +29,7 @@ def home():
 def signup():
 	#intiate for signupForm class from form.py
 	form = SignupForm()
-	#dive into flask migrations to make sure I don't have to delete tables
+
 	#form validation
 	if request.method == 'POST':
 		if form.validate() == False:
@@ -41,7 +42,7 @@ def signup():
 
 			#store in cookies 
 			session['email'] = new_user.email
-			return redirect(url_for('profile'))
+			return redirect(url_for('/profile/soundcloud'))
 
 	elif request.method == 'GET':
 		return render_template('signup.html', form=form)
@@ -76,12 +77,19 @@ def profile():
 
 	user = User.query.filter_by(email = session['email']).first()
 
+	new_track = soundcloud_tracks('kanye','flashing lights','http://www.kanye.com', user)
+	db.session.add(new_track)
+	db.session.commit()
+	favorites = 'test'
+
+	print user.tracks.first().artist
+
 	if user:
-		client = sc.Client(access_token=user.soundcloud_token)
-		fav = client.get('/me/favorites/', limit = 30)
-		favorites = {}
-		for track in fav:
-			favorites[track.user['username']] = track.title
+		# client = sc.Client(access_token = user.soundcloud_token)
+		# fav = client.get('/me/favorites/', limit = 30)
+		# favorites = {}
+		# for track in fav:
+		# 	favorites[track.user['username']] = track.title
 		
 		return render_template('profile.html', data = favorites)
 	else:
