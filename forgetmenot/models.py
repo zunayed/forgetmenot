@@ -9,6 +9,7 @@ class soundcloud_tracks(db.Model):
     artist = db.Column(db.String(100))
     title = db.Column(db.String(300))
     url = db.Column(db.String(300))
+    alive = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('tracks', lazy='dynamic'))
 
@@ -17,6 +18,7 @@ class soundcloud_tracks(db.Model):
         self.title = title
         self.url = url
         self.user = user
+        self.alive = True
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)

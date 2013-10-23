@@ -12,6 +12,7 @@ client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
 
 @app.route('/')
 def home():
+	db.create_all()
 	return "home"
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -99,15 +100,13 @@ def soundcloud():
 def update():
 	user = User.query.filter_by(email = session['email']).first()
 	client = sc.Client(access_token = user.soundcloud_token)
-	fav = client.get('/me/favorites/', limit = 10)
+	fav = client.get('/me/favorites/', limit = 500)
 
 	for track in fav:
 		current_track = soundcloud_tracks.query.filter_by(url = track.permalink_url).first()
 		if current_track:
 			print 'duplicate'
 			print current_track.title
-			#do not put in db
-			#mark as alive
 		else:
 			#put in db
 			new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
