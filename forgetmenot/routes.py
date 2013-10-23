@@ -12,17 +12,6 @@ client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
 
 @app.route('/')
 def home():
-	db.create_all()
-	#Look up user in  database using SQLalchemy 
-	# user = User.query.filter_by(email = session['email']).first()
-	# access_token = client.exchange_token(code = user.soundcloud_token)
-	
-	# fav = client.get('/me/favorites/', limit = 30)
-	# playlist = {}
-	# for track in fav:
-	# 	playlist[track.user['username']] = track.title
-
-	# return render_template('home.html', data = playlist)
 	return "home"
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -77,21 +66,8 @@ def profile():
 
 	user = User.query.filter_by(email = session['email']).first()
 
-	new_track = soundcloud_tracks('kanye','flashing lights','http://www.kanye.com', user)
-	db.session.add(new_track)
-	db.session.commit()
-	favorites = 'test'
-
-	print user.tracks.first().artist
-
 	if user:
-		# client = sc.Client(access_token = user.soundcloud_token)
-		# fav = client.get('/me/favorites/', limit = 30)
-		# favorites = {}
-		# for track in fav:
-		# 	favorites[track.user['username']] = track.title
-		
-		return render_template('profile.html', data = favorites)
+		return render_template('profile.html')
 	else:
 		return redirect(url_for('signin'))
 	
@@ -112,12 +88,29 @@ def link_services():
 @app.route('/profile/soundcloud')
 def soundcloud():
 	user = User.query.filter_by(email = session['email']).first()
+	
 	#check to see if token already exist in database
-
 	if user.soundcloud_token:	
 		return redirect(url_for('profile'))
 	else:
 		return redirect(client.authorize_url())	
+
+@app.route('/profile/update')
+def update():
+	user = User.query.filter_by(email = session['email']).first()
+	client = sc.Client(access_token = user.soundcloud_token)
+	fav = client.get('/me/favorites/', limit = 10)
+
+	for track in fav:
+		current_track = soundcloud_tracks.query.filter_by(url = track.permalink_url).first()
+		print 'duplicate'
+		print current_track
+
+		new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
+		db.session.add(new_track)
+		db.session.commit()
+
+	return redirect(url_for('profile'))
 
 @app.route('/about')
 def about():

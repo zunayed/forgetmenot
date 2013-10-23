@@ -7,8 +7,8 @@ db = SQLAlchemy()
 class soundcloud_tracks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artist = db.Column(db.String(100))
-    title = db.Column(db.String(100))
-    url = db.Column(db.String(200))
+    title = db.Column(db.String(300))
+    url = db.Column(db.String(300))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('tracks', lazy='dynamic'))
 
