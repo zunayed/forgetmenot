@@ -103,12 +103,16 @@ def update():
 
 	for track in fav:
 		current_track = soundcloud_tracks.query.filter_by(url = track.permalink_url).first()
-		print 'duplicate'
-		print current_track
-
-		new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
-		db.session.add(new_track)
-		db.session.commit()
+		if current_track:
+			print 'duplicate'
+			print current_track.title
+			#do not put in db
+			#mark as alive
+		else:
+			#put in db
+			new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
+			db.session.add(new_track)
+			db.session.commit()
 
 	return redirect(url_for('profile'))
 
