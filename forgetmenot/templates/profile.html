@@ -4,8 +4,8 @@
 	<div class = "submenu">
 		<strong><nav>
 			<ul class="features">
-				<li><a href="{{ url_for('home') }}"> / Home</a></li>
-				<li><a href="{{ url_for('about') }}"> / About</a></li>
+				<li><a href="{{ url_for('soundcloud') }}"> / Get Token</a></li>
+				<li><a href="{{ url_for('update') }}"> / Update</a></li>
 			</ul>
 		</nav></strong>
 
@@ -13,11 +13,8 @@
 	</div>
 </div>
 <div class = "content">
-	<form action="{{ url_for('soundcloud') }}">
-	    <input type="submit" value="go to soundcloud">
-	</form>
 
-<!-- 	<table>
+	<table>
         <tr>
             <th>User</th>
             <th>Title</th>
@@ -28,7 +25,7 @@
                     <th>{{data[item]}}</th>
                 </tr>
             {% endfor %}
-    </table> -->
+    </table>
 </div>
 
 {% endblock %}

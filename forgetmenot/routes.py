@@ -41,7 +41,6 @@ def signup():
 def signin():
 	form = SigninForm()
 
-
 	if request.method == 'POST':
 		if form.validate() == False:
 			return render_template('signin.html', form=form)
@@ -68,7 +67,12 @@ def profile():
 	user = User.query.filter_by(email = session['email']).first()
 
 	if user:
-		return render_template('profile.html')
+		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
+		data = {}
+		for item in sc_tracks:
+			data[item.artist] = item.title
+
+		return render_template('profile.html', data = data)
 	else:
 		return redirect(url_for('signin'))
 	
@@ -99,15 +103,19 @@ def soundcloud():
 @app.route('/profile/update')
 def update():
 	user = User.query.filter_by(email = session['email']).first()
+	
 	client = sc.Client(access_token = user.soundcloud_token)
 	fav = client.get('/me/favorites/', limit = 500)
 
+	current_playlist = []
+
 	for track in fav:
 		current_track = soundcloud_tracks.query.filter_by(url = track.permalink_url).first()
-		if current_track:
-			print 'duplicate'
-			print current_track.title
-		else:
+		current_playlist.append(track.permalink_url)
+		if not current_track:
+			#check all existing urls are in current play list or not
+			#get list of urls from existing database
+			#if the item is missing from current_playlist then assign that track to not alive
 			#put in db
 			new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
 			db.session.add(new_track)
