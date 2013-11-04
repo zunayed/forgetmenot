@@ -18,6 +18,7 @@ class soundcloud_tracks(db.Model):
         self.title = title
         self.url = url
         self.user = user
+        #set as default
         self.alive = True
 
 class User(db.Model):
@@ -40,4 +41,6 @@ class User(db.Model):
 
     def checkPassword(self, password):
         return check_password_hash(self.pwdhash, password)
+
+
 

@@ -26,6 +26,7 @@ form label {
 form input#firstname, 
 form input#lastname, 
 form input#email, 
+form input#confirm,
 form input#password {
   width: 400px;
   background-color: #fafafa;
@@ -63,5 +64,5 @@ form input[type="submit"]:hover{
   background-color: #FBB0B0;
   padding: 10px;
   text-align: center;
-  width: 100%;
+  width: 392px;
 }

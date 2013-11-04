@@ -15,6 +15,8 @@ def home():
 	db.create_all()
 	return "home"
 
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
 	#intiate for signupForm class from form.py
@@ -23,6 +25,7 @@ def signup():
 	#form validation
 	if request.method == 'POST':
 		if form.validate() == False:
+			# print str(form.errors['email'])
 			return render_template('signup.html', form=form)
 		else:   
 			new_user = User(form.firstname.data, form.lastname.data, form.email.data, form.password.data)
@@ -32,7 +35,7 @@ def signup():
 
 			#store in cookies 
 			session['email'] = new_user.email
-			return redirect(url_for('/profile/soundcloud'))
+			return redirect(url_for('profile'))
 
 	elif request.method == 'GET':
 		return render_template('signup.html', form=form)
@@ -69,6 +72,7 @@ def profile():
 	if user:
 		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
 		data = {}
+	
 		for item in sc_tracks:
 			data[item.artist] = item.title
 

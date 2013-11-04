@@ -2,27 +2,6 @@
  
 {% block content %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-  <div class = "jumbo">
-    <div class = "submenu">
-      <h3>SignUp</h3>
-    </div>
-  </div>
-
-  {% for message in form.firstname.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-   
-  {% for message in form.lastname.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-   
-  {% for message in form.email.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-
-  {% for message in form.password.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
 
   <body>
     <div class = "content">
@@ -32,17 +11,42 @@
         {{ form.firstname.label }}
         {{ form.firstname }}
 
+        {% for message in form.firstname.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+
         {{ form.lastname.label }}
         {{ form.lastname }}
+
+        {% for message in form.lastname.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
 
         {{ form.email.label }}
         {{ form.email }}
 
+        {% for message in form.email.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+
         {{ form.password.label }}
         {{ form.password }}
+
+        {% for message in form.password.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+
+        {{ form.confirm.label }}
+        {{ form.confirm }}
+
+        {% for message in form.confirm.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
          
         {{ form.submit }}
       </form>  
     </div>
   </body>
+
+  <script src="{{ url_for('static', filename='signup.js') }}"></script>
 {% endblock %}

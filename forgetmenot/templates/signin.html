@@ -3,18 +3,8 @@
 {% block content %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
   <div class = "jumbo">
-    <div class = "submenu">
-      <h3>SignIn</h3>
-    </div>
   </div>
- 
-  {% for message in form.email.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-   
-  {% for message in form.password.errors %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
+
   <body>
     <div class = "content">
       <form action="{{ url_for('signin') }}" method=post>
@@ -22,9 +12,17 @@
          
         {{ form.email.label }}
         {{ form.email }}
+
+        {% for message in form.email.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
          
         {{ form.password.label }}
         {{ form.password }}
+
+        {% for message in form.password.errors %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
          
         {{ form.submit }}
       </form>
