@@ -71,12 +71,15 @@ def profile():
 
 	if user:
 		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
-		data = {}
-	
-		for item in sc_tracks:
-			data[item.artist] = item.title
+		data = []
 
-		return render_template('profile.html', data = data)
+		for item in sc_tracks:
+			line_item = (item.artist, item.title)
+			data.append(line_item)
+		
+		print data
+
+		return render_template('profile.html', data = enumerate(data))
 	else:
 		return redirect(url_for('signin'))
 	

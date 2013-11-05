@@ -1,32 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class = "sub">
-	<div class = "submenu">
-		<strong><nav>
-			<ul class="features">
-				<li><a href="{{ url_for('soundcloud') }}"> / Get Token</a></li>
-				<li><a href="{{ url_for('update') }}"> / Update</a></li>
-			</ul>
-		</nav></strong>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/unsemantic-grid-responsive-no-ie7.css') }}">
 
-		
-	</div>
-</div>
-<div class = "content">
+<body>
+    <div class="grid-container">
+        <div class="grid-20">
+            <div class = "sub">
+        		<strong><nav>
+    				<li><a href="{{ url_for('soundcloud') }}">Get Token</a></li>
+    				<li><a href="{{ url_for('update') }}">Update</a></li>
+        		</nav></strong>
+            </div>
+        </div> 
 
-	<table>
-        <tr>
-            <th>User</th>
-            <th>Title</th>
-        </tr>
-            {%for item in data %}
-                <tr>
-                    <th>{{item}}</th>
-                    <th>{{data[item]}}</th>
-                </tr>
-            {% endfor %}
-    </table>
-</div>
+        <div class="grid-80">   
+            <div class = "content">
+
+            	<table>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Title</th>
+                    </tr>
+                        {%for num, (artist, title) in data %}
+                            <tr>
+                                <th>{{num + 1}}</th>
+                                <th>{{artist}}</th>
+                                <th>{{title}}</th>
+                            </tr>
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
 
 {% endblock %}
 

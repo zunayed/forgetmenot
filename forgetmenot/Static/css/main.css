@@ -61,13 +61,6 @@ header h1.logo:hover {
   text-decoration: none;
 }
 
-.submenu {
-  text-align: left;
-
-}
-.features li {
-  display: inline;
-}
 .features li a {
   color: #000;
   text-decoration: none;
@@ -103,17 +96,19 @@ h3 {
 }
 
 div.sub {
-  height: 35px;
+  height: 200px;
   background-color: #eeeeee;
-  width: 100%
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  width: 100%;
 }
 
-div.submenu {
-  width: 940px;
-  margin: 0 auto;
+.sub li {
+  padding-left: 5px;
+  text-align: left;
+}
+
+.sub li a {
+  color: #000;
+  text-decoration: none;
 }
 
 div.messages {

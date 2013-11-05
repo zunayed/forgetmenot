@@ -6,7 +6,7 @@ from models import db, User
 class SignupForm(Form):
 	firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
 	lastname = TextField("Last name",  [validators.Required("Please enter your last name.")])
-	email = TextField("Email",  [validators.Required("Please enter your email address."), validators.Email("Please enter your email address.")])
+	email = TextField("Email",  [validators.Required("Please enter a valid email address."), validators.Email("Please enter your email address.")])
 	password = PasswordField('Password', [validators.Required("Please enter a password."), validators.EqualTo('confirm', message = 'Passwords must match')])
 	confirm = PasswordField('Repeat Password')
 	submit = SubmitField("Create account")
