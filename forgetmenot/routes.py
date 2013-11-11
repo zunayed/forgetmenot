@@ -15,8 +15,6 @@ def home():
 	db.create_all()
 	return "home"
 
-
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
 	#intiate for signupForm class from form.py
@@ -71,13 +69,7 @@ def profile():
 
 	if user:
 		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
-		data = []
-
-		for item in sc_tracks:
-			line_item = (item.artist, item.title)
-			data.append(line_item)
-		
-		print data
+		data = [[item.artist, item.title, item.alive, item.url] for item in sc_tracks]
 
 		return render_template('profile.html', data = enumerate(data))
 	else:
@@ -112,21 +104,27 @@ def update():
 	user = User.query.filter_by(email = session['email']).first()
 	
 	client = sc.Client(access_token = user.soundcloud_token)
-	fav = client.get('/me/favorites/', limit = 500)
+	cloud_fav_list = client.get('/me/favorites/', limit = 500)
+		
+	db_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
 
-	current_playlist = []
+	# lambda expression vs list comprehension 
+	# db_data = map(lambda item: item.url, db_tracks)
+	db_data = set(item.url for item in db_tracks)
+	cloud_url_list = set(track.permalink_url for track in cloud_fav_list)
 
-	for track in fav:
-		current_track = soundcloud_tracks.query.filter_by(url = track.permalink_url).first()
-		current_playlist.append(track.permalink_url)
-		if not current_track:
-			#check all existing urls are in current play list or not
-			#get list of urls from existing database
-			#if the item is missing from current_playlist then assign that track to not alive
-			#put in db
-			new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
-			db.session.add(new_track)
-			db.session.commit()
+
+	for track in db_data - cloud_url_list:
+		#track that are not in your soundcloud fav any more and are going to be marked dead
+		current_track = soundcloud_tracks.query.filter_by(url = track).first()
+		current_track.alive = False
+
+	for track in cloud_url_list - db_data:
+		#new tracks to add to database
+		new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
+		db.session.add(new_track)
+	
+	db.session.commit()
 
 	return redirect(url_for('profile'))
 
