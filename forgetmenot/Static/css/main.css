@@ -97,7 +97,7 @@ h3 {
 
 div.sub {
   height: 200px;
-  background-color: #eeeeee;
+  background-color: #f5f5f5;
   width: 100%;
 }
 
@@ -123,6 +123,10 @@ div.messages {
     position:relative;
     text-align: center;
 }
+.content th a {
+  color: #000;
+  text-decoration: none;
+}
 
 /*table*/
 
@@ -138,3 +142,4 @@ th, td {
 tbody tr:hover {
   background: #B894FF;
 }
+
