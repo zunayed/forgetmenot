@@ -4,11 +4,12 @@ from models import db, User, soundcloud_tracks
 from form import SignupForm, SigninForm
 
 import soundcloud as sc
+import os
 
 #create soundcloud client object with app credentials 
-client = sc.Client(client_id='4172958b52e31b5f1e0270600d02aa63',
-                       client_secret='d1f3656edbd4f2cdf10ced0dce112c4f',
-                       redirect_uri='http://localhost:5000/link_services')
+client = sc.Client(client_id=os.environ["ID"],
+                       client_secret=os.environ["SECRET"],
+                       redirect_uri=os.environ["REDIRECT"])
 
 @app.route('/')
 def home():
@@ -105,14 +106,13 @@ def update():
 	
 	client = sc.Client(access_token = user.soundcloud_token)
 	cloud_fav_list = client.get('/me/favorites/', limit = 500)
-		
+	
 	db_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
 
 	# lambda expression vs list comprehension 
 	# db_data = map(lambda item: item.url, db_tracks)
 	db_data = set(item.url for item in db_tracks)
 	cloud_url_list = set(track.permalink_url for track in cloud_fav_list)
-
 
 	for track in db_data - cloud_url_list:
 		#track that are not in your soundcloud fav any more and are going to be marked dead
@@ -121,7 +121,8 @@ def update():
 
 	for track in cloud_url_list - db_data:
 		#new tracks to add to database
-		new_track = soundcloud_tracks(track.user['username'], track.title, track.permalink_url , user)
+		trk = [item for item in cloud_fav_list if item.permalink_url == track][0]
+		new_track = soundcloud_tracks(trk.user['username'], trk.title, trk.permalink_url , user)
 		db.session.add(new_track)
 	
 	db.session.commit()
