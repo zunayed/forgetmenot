@@ -128,6 +128,33 @@ div.messages {
   text-decoration: none;
 }
 
+/*search button*/
+input#search {
+  width: 99%;
+  background-color: #fafafa;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  font-size: 1.1em;
+}
+
+/* progress bar*/
+
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+   appearance: none;
+
+  width: 100%;
+  height: 30px;
+}
+
+progress[value]::-webkit-progress-value{
+  background-color: #33CCFF;
+}
+
 /*table*/
 
 table {

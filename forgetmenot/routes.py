@@ -68,11 +68,14 @@ def profile():
 
 	user = User.query.filter_by(email = session['email']).first()
 
+	num_dead = soundcloud_tracks.query.filter_by(alive = False).count()
+	num_alive = soundcloud_tracks.query.filter_by(alive = True).count()
+
 	if user:
 		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
 		data = [[item.artist, item.title, item.alive, item.url] for item in sc_tracks]
 
-		return render_template('profile.html', data = enumerate(data))
+		return render_template('profile.html', data = enumerate(data), num_alive = num_alive, num_dead = num_dead)
 	else:
 		return redirect(url_for('signin'))
 	
