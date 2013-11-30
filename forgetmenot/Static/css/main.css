@@ -130,43 +130,28 @@ div.messages {
 
 /*search button*/
 input#search {
-  width: 99%;
+  width: 98%;
   background-color: #fafafa;
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
-  border: 1px solid #cccccc;
+  border: 4px solid #B894FF;
   padding: 5px;
   font-size: 1.1em;
 }
 
-/* progress bar*/
-
-progress[value] {
-  /* Reset the default appearance */
-  -webkit-appearance: none;
-   appearance: none;
-
-  width: 100%;
-  height: 30px;
-}
-
-progress[value]::-webkit-progress-value{
-  background-color: #33CCFF;
-}
-
 /*table*/
 
-table {
+.track_table {
   border-collapse: collapse;
   width: 100%;
 }
-th, td {
+.track_table th, td {
   padding: 0.25rem;
   text-align: left;
   border: 1px solid #ccc;
 }
-tbody tr:hover {
+.track_table tbody tr:hover {
   background: #B894FF;
 }
 
@@ -186,5 +171,10 @@ tbody tr:hover {
 
 .go-top:hover {
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+#chartLegend {
+  border-collapse: collapse;
+  float: right;
 }
 

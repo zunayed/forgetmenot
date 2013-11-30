@@ -10,8 +10,13 @@
     				<li><a href="{{ url_for('update') }}">Update</a></li>
         		</nav></strong>
             </div>
-          
+            <br></br>
             <div class="placefolder1" style="height:200px;" id="placeholder1"></div>
+            <div id="chartLegend"></div>
+
+            <div id="{{num_alive}}" class="alive_num"></div>
+            <div id="{{num_dead}}" class="dead_num"></div>
+
         
         </div> 
 
@@ -19,7 +24,7 @@
             <div class = "content">
                 <input type="text" id="search" placeholder="Type to search through your tracks"></input>
                 <br></br>
-                <table id="track_table">
+                <table class="track_table">
                     <tr>
                         <th>#</th>
                         <th>User</th>
