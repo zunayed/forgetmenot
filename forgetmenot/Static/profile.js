@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 
     //search box
-    var $rows = $('#table tr');
+    var $rows = $('#track_table tr');
     $('#search').keyup(function() {
         var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
         
@@ -25,6 +25,33 @@ $(document).ready(function() {
         }).hide();
     });
 
+    var chart_array = [];
 
+    var label = "Alive " + 45;
+    var value = 45;
+    var data1 = {
+        label: label,
+        data: value,
+        color: "#FF5050"
+    };
+
+    var label = "dead " + 2 ;
+    var value = 2;
+    var data2 = {
+        label: label,
+        data: value,
+        color: "#33CCCC"
+    };
+
+    chart_array.push(data1, data2); 
+
+    $.plot('#placeholder1', chart_array, {
+        series: {
+            pie: {
+                innerRadius: 0.5,
+                show: true
+            }
+        }
+    });
 
 });

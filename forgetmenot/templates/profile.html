@@ -10,16 +10,16 @@
     				<li><a href="{{ url_for('update') }}">Update</a></li>
         		</nav></strong>
             </div>
-            <div class="grid-20">
-               
-            </div>
+          
+            <div class="placefolder1" style="height:200px;" id="placeholder1"></div>
+        
         </div> 
 
         <div class="grid-80">   
             <div class = "content">
                 <input type="text" id="search" placeholder="Type to search through your tracks"></input>
                 <br></br>
-                <table id="table">
+                <table id="track_table">
                     <tr>
                         <th>#</th>
                         <th>User</th>
@@ -52,6 +52,8 @@
 </body>
 
 <!-- JavaScript -->
+<script src="{{ url_for('static', filename='jquery.flot.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.flot.pie.js') }}"></script>
 <script src="{{ url_for('static', filename='profile.js') }}"></script>
 
 {% endblock %}
