@@ -19,3 +19,7 @@ To Do
 
 ![profile page screenshot](http://i.imgur.com/CeXpQBe.png)
 
+![profile page screenshot](http://i.imgur.com/m6G2WEb.png)
+
+![profile page screenshot](http://i.imgur.com/ic1mJ3h.png)
+
