@@ -2,7 +2,7 @@ from flask import Flask
 from models import db
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='Static')
 app.secret_key = 'development key'
 
 import forgetmenot.routes
