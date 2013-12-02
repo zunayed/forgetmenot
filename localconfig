@@ -1,4 +1,0 @@
-export DB='postgresql://zunayed:password@localhost/forgetmenot'
-export ID='4172958b52e31b5f1e0270600d02aa63'
-export SECRET='d1f3656edbd4f2cdf10ced0dce112c4f'
-export REDIRECT='http://localhost:5000/link_services'
