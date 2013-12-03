@@ -68,8 +68,8 @@ def profile():
 
 	user = User.query.filter_by(email = session['email']).first()
 
-	num_dead = soundcloud_tracks.query.filter_by(alive = False, user_id = user_id).count()
-	num_alive = soundcloud_tracks.query.filter_by(alive = True, user_id = user_id).count()
+	num_dead = soundcloud_tracks.query.filter_by(alive = False).filter_by(user_id = user.id).count()
+	num_alive = soundcloud_tracks.query.filter_by(alive = True).filter_by(user_id = user.id).count()
 
 	if user:
 		sc_tracks = soundcloud_tracks.query.filter_by(user_id = user.id).all()
