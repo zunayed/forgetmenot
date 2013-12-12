@@ -1,0 +1,25 @@
+<table class="track_table">
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Title</th>
+        <th>Alive</th>
+    </tr>
+        {%for num, (artist, title, alive, url) in data %}
+            {% if alive %}
+            <tr>
+                <th>{{num + 1}}</th>
+                <th>{{artist}}</th>
+                <th><a href="{{url}}">{{title}}</a></th>
+                <th>&#x2713</th>
+            </tr>
+            {% else %}
+            <tr class="dead">
+                <th>{{num + 1}}</th>
+                <th>{{artist}}</th>
+                <th><a href="{{url}}">{{title}}</a></th>
+                <th>Dead</th>
+                {% endif %}
+            </tr>
+        {% endfor %}
+</table>

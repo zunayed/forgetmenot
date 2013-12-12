@@ -114,4 +114,11 @@ $(document).ready(function() {
         }
     });
 
+    $('.progress').spin();
+    $.get('/profile/update', function(){
+        $('.progress').spin(false);
+    });
+
+
+
 });

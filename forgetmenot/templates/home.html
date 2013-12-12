@@ -1,18 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="jumbo">
-    <h3>Favorites</h3>
-    <table>
-        <tr>
-            <th>User</th>
-            <th>Title</th>
-        </tr>
-            {%for item in data %}
-                <tr>
-                    <th>{{item}}</th>
-                    <th>{{data[item]}}</th>
-                </tr>
-            {% endfor %}
-    </table>
-  </div>
+    <div class="grid-container">
+        <div class="grid-100">
+            <div class="d3_chart"></div>
+        </div>
+    </div>
+
+<!-- JavaScript -->
+
+<script src="{{ url_for('static', filename='d3.v3.js') }}"></script>
+<script src="{{ url_for('static', filename='profile.js') }}"></script>
+
 {% endblock %}

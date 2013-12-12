@@ -11,44 +11,19 @@
         		</nav></strong>
             </div>
             <br></br>
-            <div class="d3"></div>
             <div class="placefolder1" style="height:200px;" id="placeholder1"></div>
             <div id="chartLegend"></div>
 
             <div id="{{num_alive}}" class="alive_num"></div>
             <div id="{{num_dead}}" class="dead_num"></div>
-  
+            <div class="progress"></div>
         </div> 
 
         <div class="grid-80">   
              <div class = "content">
                 <input type="text" id="search" placeholder="Type to search through your tracks"></input>
                 <br></br>
-                <table class="track_table">
-                    <tr>
-                        <th>#</th>
-                        <th>User</th>
-                        <th>Title</th>
-                        <th>Alive</th>
-                    </tr>
-                        {%for num, (artist, title, alive, url) in data %}
-                            {% if alive %}
-                            <tr>
-                                <th>{{num + 1}}</th>
-                                <th>{{artist}}</th>
-                                <th><a href="{{url}}">{{title}}</a></th>
-                                <th>&#x2713</th>
-                            </tr>
-                            {% else %}
-                            <tr class="dead">
-                                <th>{{num + 1}}</th>
-                                <th>{{artist}}</th>
-                                <th><a href="{{url}}">{{title}}</a></th>
-                                <th>Dead</th>
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                </table>
+                {% include "tracktable.html" %}
             </div>
         </div>
     </div>
@@ -59,7 +34,8 @@
 <!-- JavaScript -->
 <script src="{{ url_for('static', filename='jquery.flot.js') }}"></script>
 <script src="{{ url_for('static', filename='jquery.flot.pie.js') }}"></script>
-<script src="{{ url_for('static', filename='d3.v3.js') }}"></script>
+<script src="{{ url_for('static', filename='spin.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.spin.js') }}"></script>
 <script src="{{ url_for('static', filename='profile.js') }}"></script>
 
 {% endblock %}
