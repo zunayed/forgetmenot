@@ -13,8 +13,8 @@ client = sc.Client(client_id=os.environ["ID"],
 
 @app.route('/')
 def home():
-	db.create_all()
-	return "home"
+	#db.create_all()
+	return render_template('home.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -78,30 +78,6 @@ def profile():
 		return render_template('profile.html', data = enumerate(data), num_alive = num_alive, num_dead = num_dead)
 	else:
 		return redirect(url_for('signin'))
-	
-
-@app.route('/link_services')
-def link_services():
-	soundcloud_code = request.args.get('code')
-
-	#*******if soundcloud doesn't come back with show error ******
-	access_token = client.exchange_token(code = soundcloud_code) 
-	user = User.query.filter_by(email = session['email']).first()
-	
-	user.soundcloud_token = access_token.access_token
-	db.session.commit()
-
-	return redirect(url_for('profile'))
-
-@app.route('/profile/soundcloud')
-def soundcloud():
-	user = User.query.filter_by(email = session['email']).first()
-	
-	#check to see if token already exist in database
-	if user.soundcloud_token:	
-		return redirect(url_for('profile'))
-	else:
-		return redirect(client.authorize_url())	
 
 @app.route('/profile/update')
 def update():
@@ -130,7 +106,31 @@ def update():
 	
 	db.session.commit()
 
+	return redirect(url_for('profile'))	
+
+@app.route('/link_services')
+def link_services():
+	soundcloud_code = request.args.get('code')
+
+	#*******if soundcloud doesn't come back with show error ******
+	access_token = client.exchange_token(code = soundcloud_code) 
+	user = User.query.filter_by(email = session['email']).first()
+	
+	user.soundcloud_token = access_token.access_token
+	db.session.commit()
+
 	return redirect(url_for('profile'))
+
+@app.route('/profile/soundcloud')
+def soundcloud():
+	user = User.query.filter_by(email = session['email']).first()
+	
+	#check to see if token already exist in database
+	if user.soundcloud_token:	
+		return redirect(url_for('profile'))
+	else:
+		return redirect(client.authorize_url())	
+
 
 @app.route('/about')
 def about():
