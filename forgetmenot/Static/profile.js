@@ -1,5 +1,7 @@
 $(document).ready(function() {
     // Show or hide the sticky footer button
+    addRowHandlers()
+    
     $(window).scroll(function() {
         if ($(this).scrollTop() > 100) {
             $('.go-top').fadeIn(200);
@@ -7,6 +9,8 @@ $(document).ready(function() {
             $('.go-top').fadeOut(200);
         }
     });
+
+
     // Animate the scroll to top
     $('.go-top').click(function(event) {
         event.preventDefault();
@@ -27,55 +31,6 @@ $(document).ready(function() {
 
     var alive_num = $('.alive_num').attr('id');
     var dead_num = $('.dead_num').attr('id');
-    
-    // //d3 chart
-    // var w = 200;
-    // var h = 200;
-
-
-    // var dataset =[alive_num, dead_num];
-
-    // var outerRadius = w / 2;
-    // var innerRadius = w / 3.5;
-    // var arc = d3.svg.arc()
-    //                 .innerRadius(innerRadius)
-    //                 .outerRadius(outerRadius);
-
-    // var pie = d3.layout.pie();
-
-    // //Easy colors accessible via a 10-step ordinal scale
-    // var color = d3.scale.category10();
-
-    // //Create SVG element
-    // var svg = d3.select(".d3")
-    //             .append("svg")
-    //             .attr("width", w)
-    //             .attr("height", h);
-
-    // //Set up groups
-    // var arcs = svg.selectAll("g.arc")
-    //                 .data(pie(dataset))
-    //                 .enter()
-    //                 .append("g")
-    //                 .attr("class", "arc")
-    //                 .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
-
-    // //Draw arc paths
-    // arcs.append("path")
-    //     .attr("fill", function(d, i) {
-    //         return color(i);
-    //     })
-    // .   attr("d", arc);
-
-    // //Labels
-    // arcs.append("text")
-    //     .attr("transform", function(d) {
-    //         return "translate(" + arc.centroid(d) + ")";
-    //     })
-    //     .attr("text-anchor", "middle")
-    //     .text(function(d) {
-    //         return d.value;
-    //     });
 
     //Flot Donut chart
     var alive_num = $('.alive_num').attr('id');
@@ -119,6 +74,27 @@ $(document).ready(function() {
         $('.progress').spin(false);
     });
 
-
-
 });
+
+function addRowHandlers() {
+    var table = document.getElementById("table");
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = 
+            function(row) 
+            {
+                return function() { 
+                    var cell = row.getElementsByTagName("th")[0];
+                    var id = cell.innerHTML;
+                    var sc_id = row.id;
+
+                    url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + sc_id
+                    settings = '&amp;color=ff5500&amp;auto_play=true&amp;hide_related=true&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false'
+                    $('#sc_player iframe').attr('src', url + settings)
+                };
+            };
+
+        currentRow.onclick = createClickHandler(currentRow);
+    }
+}
