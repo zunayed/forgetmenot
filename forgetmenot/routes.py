@@ -78,7 +78,7 @@ def profile():
 
     if user:
         sc_tracks = soundcloud_tracks.query.filter_by(user_id=user.id).all()
-        data = [[item.artist, item.title, item.alive, item.url] for item in sc_tracks]
+        data = [[item.artist, item.title, item.alive, item.url, item.track_id] for item in sc_tracks]
 
         return render_template('profile.html', data=enumerate(data), num_alive=num_alive, num_dead=num_dead)
     else:
@@ -90,8 +90,7 @@ def update():
     user = User.query.filter_by(email=session['email']).first()
 
     client = sc.Client(access_token=user.soundcloud_token)
-    cloud_fav_list = client.get('/me/favorites/', limit=500)
-
+    cloud_fav_list = client.get('/me/favorites/', limit=1000)
     db_tracks = soundcloud_tracks.query.filter_by(user_id=user.id).all()
 
     # lambda expression vs list comprehension
@@ -107,7 +106,13 @@ def update():
     for track in cloud_url_list - db_data:
         #new tracks to add to database
         trk = [item for item in cloud_fav_list if item.permalink_url == track][0]
-        new_track = soundcloud_tracks(trk.user['username'], trk.title, trk.permalink_url, user)
+        new_track = soundcloud_tracks(
+            trk.id,
+            trk.user['username'],
+            trk.title,
+            trk.permalink_url,
+            user
+        )
         db.session.add(new_track)
 
     db.session.commit()
@@ -118,11 +123,11 @@ def update():
 @app.route('/link_services')
 def link_services():
     soundcloud_code = request.args.get('code')
-
-    #*******if soundcloud doesn't come back with show error ******
     access_token = client.exchange_token(code=soundcloud_code)
     user = User.query.filter_by(email=session['email']).first()
+    print user
     user.soundcloud_token = access_token.access_token
+    print access_token.access_token
     db.session.commit()
 
     return redirect(url_for('profile'))
