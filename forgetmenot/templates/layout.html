@@ -15,6 +15,7 @@
           {% if 'email' in session %}
           <li><a href="{{ url_for('home') }}">Home</a></li>
           <li><a href="{{ url_for('about') }}">About</a></li>
+          <li><a href="{{ url_for('soundcloud') }}">Token</a></li>
           <li><a href="{{ url_for('profile') }}">Profile</a></li>
           <li><a href="{{ url_for('signout') }}">Signout</a></li>
           {% else %}

@@ -74,6 +74,7 @@ def profile():
         return redirect(url_for('signin'))
 
     user = User.query.filter_by(email=session['email']).first()
+    update_track_status(user)
 
     num_dead = soundcloud_tracks.query.filter_by(alive=False).filter_by(user_id=user.id).count()
     num_alive = soundcloud_tracks.query.filter_by(alive=True).filter_by(user_id=user.id).count()
@@ -93,10 +94,7 @@ def profile():
         return redirect(url_for('signin'))
 
 
-@app.route('/profile/update')
-def update():
-    user = User.query.filter_by(email=session['email']).first()
-
+def update_track_status(user):
     client = sc.Client(access_token=user.soundcloud_token)
     cloud_fav_list = client.get('/me/favorites/', limit=1000)
     db_tracks = soundcloud_tracks.query.filter_by(user_id=user.id).all()
@@ -124,8 +122,6 @@ def update():
         db.session.add(new_track)
 
     db.session.commit()
-
-    return redirect(url_for('profile'))
 
 
 @app.route('/link_services')
