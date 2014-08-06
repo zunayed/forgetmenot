@@ -31,7 +31,11 @@ def signup():
             return render_template('signup.html', form=form)
         else:
             new_user = User(
-                form.firstname.data, form.lastname.data, form.email.data, form.password.data)
+                form.firstname.data,
+                form.lastname.data,
+                form.email.data,
+                form.password.data
+            )
 
             db.session.add(new_user)
             db.session.commit()
